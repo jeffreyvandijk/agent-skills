@@ -1,6 +1,6 @@
 ---
 name: build
-description: Use to implement issues created by /plan-work — either one specific ticket (/build #12) or the whole open backlog, one ticket per isolated subagent. Triggers on "/build", "/build #<number>", "build the issues", "implement this ticket".
+description: Use to implement issues created by /plan-work — either one specific ticket (/build #12) or the whole open backlog, one ticket per isolated subagent, every ticket built test-first via /test. Triggers on "/build", "/build #<number>", "build the issues", "implement this ticket".
 disable-model-invocation: true
 ---
 
@@ -52,10 +52,12 @@ gh api repos/<owner>/<repo>/issues/<number>/sub_issues --jq 'length'
 
 1. Fetch the issue: `gh issue view <number> --repo <owner>/<repo> --json title,body,number`
 2. Create a branch named after it, e.g. `issue-<number>-<kebab-slug-of-title>`
-3. Implement what the issue describes, following the repo's existing
-   patterns and conventions. Run whatever tests/build/lint the project
-   has before considering it done — don't report success without
-   verifying it.
+3. Implement what the issue describes by following the **`test`**
+   skill's process: derive the behaviors to build from the issue's
+   acceptance criteria/scope items (including edge cases and error
+   paths), then work through them red → green → refactor, one at a
+   time. Never write implementation code that doesn't have a preceding
+   failing test behind it.
 4. Commit with a message referencing the issue, e.g. `Fixes #<number>: <summary>`
 5. Push the branch and open a PR:
    ```
@@ -64,12 +66,19 @@ gh api repos/<owner>/<repo>/issues/<number>/sub_issues --jq 'length'
 
    <what changed and why>"
    ```
-6. Close the issue with a summary comment:
+6. **Gate: close only if the `test` skill's "done" bar is met** — every
+   behavior has a test that was red before it was green, and the full
+   suite passes (not just the new tests). If that bar isn't met, **do
+   not close the issue**. Leave the PR open (or don't open one at all if
+   nothing is green yet), comment on the issue with what's failing and
+   why, and report that back instead of a close. If the bar is met,
+   close it:
    ```
    gh issue close <number> --repo <owner>/<repo> \
-     --comment "<what was implemented, link to the PR>"
+     --comment "<what was implemented, link to the PR, confirm tests pass>"
    ```
-7. Report back the PR URL and confirm the issue is closed.
+7. Report back the PR URL and whether the issue was closed or left open
+   pending fixes.
 
 ## Build-all
 
@@ -86,13 +95,13 @@ gh api repos/<owner>/<repo>/issues/<number>/sub_issues --jq 'length'
    flows back to this orchestrating session is a short result (issue
    number, PR URL, pass/fail, one-line summary).
 5. After each subagent finishes, record its result and move to the next
-   issue. If a ticket fails, note it and continue to the next rather
-   than aborting the whole run — unless the failure looks systemic (e.g.
-   the repo doesn't build at all), in which case stop and report
-   immediately.
+   issue. A ticket left open because it didn't clear the `test` skill's
+   done bar is an expected outcome, not a crash — note it and continue.
+   Only stop the whole run early if the failure looks systemic (e.g. the
+   repo doesn't build at all regardless of ticket).
 6. When the run ends (all issues attempted, or stopped early), report a
-   summary table: issue number → PR URL or failure reason, for every
-   ticket attempted.
+   summary table: issue number → PR URL + closed, or left open with the
+   reason, for every ticket attempted.
 
 ## Tone
 

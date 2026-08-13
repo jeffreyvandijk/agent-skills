@@ -84,20 +84,42 @@ See [`skills/plan-work/SKILL.md`](skills/plan-work/SKILL.md).
 
 Implements the sub-issues from `/plan-work` as real code. Two modes:
 
-- **`/build #12`** — implement exactly that issue: branch, implement,
-  verify (run tests/build), commit, push, open a PR (`Closes #12`), close
-  the issue with a summary comment linking the PR.
+- **`/build #12`** — implement exactly that issue: branch, implement
+  test-first via `/test`, commit, push, open a PR (`Closes #12`), and
+  close the issue **only if every behavior's tests are green and the
+  full suite passes** — otherwise the issue stays open with a comment
+  explaining what's failing.
 - **`/build`** (no number) — implement every open, buildable issue in the
   repo (skipping parent/epic issues). Only runs from an effectively fresh
   session — refuses if the conversation already has substantial unrelated
   history, since it needs the room. Confirms the full issue list with you
   first, then works through them **one at a time, each in its own fresh
   subagent** so no ticket's implementation context leaks into the next.
-  Reports a summary table (issue → PR or failure) at the end.
+  Reports a summary table (issue → PR + closed, or left open with why) at
+  the end.
 
 Also requires explicit invocation via `/build`.
 
 See [`skills/build/SKILL.md`](skills/build/SKILL.md).
+
+### `/test`
+
+Test-driven development, enforced at every step: no implementation code
+without a preceding failing test that justifies it, one small behavior
+(including edge cases and error paths) at a time, red → green → refactor,
+full suite green before anything counts as done.
+
+Used two ways:
+
+- Directly via `/test`, for any coding task that should be built
+  test-first.
+- Automatically inside `/build`'s implementation step — every ticket
+  `/build` implements goes through this process, and **an issue can only
+  be closed once its tests have gone green under this discipline.**
+
+Also requires explicit invocation via `/test`.
+
+See [`skills/test/SKILL.md`](skills/test/SKILL.md).
 
 ## Typical flow
 
@@ -105,9 +127,10 @@ See [`skills/build/SKILL.md`](skills/build/SKILL.md).
 /start       → pressure-test the idea, get a Project Brief
 /setup       → turn that brief into a pushed GitHub repo + one tracking issue
 /plan-work   → break that issue into sub-issues, one per scope item
-/build       → implement one ticket (/build #12) or the whole backlog (/build)
+/build       → implement one ticket (/build #12) or the whole backlog (/build),
+                test-first via /test — issues only close once tests are green
 ```
 
 ## Status
 
-Four skills built so far (`/start`, `/setup`, `/plan-work`, `/build`). More to come as they're built.
+Five skills built so far (`/start`, `/setup`, `/plan-work`, `/build`, `/test`). More to come as they're built.
