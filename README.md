@@ -80,14 +80,34 @@ Also requires explicit invocation via `/plan-work`.
 
 See [`skills/plan-work/SKILL.md`](skills/plan-work/SKILL.md).
 
+### `/build`
+
+Implements the sub-issues from `/plan-work` as real code. Two modes:
+
+- **`/build #12`** — implement exactly that issue: branch, implement,
+  verify (run tests/build), commit, push, open a PR (`Closes #12`), close
+  the issue with a summary comment linking the PR.
+- **`/build`** (no number) — implement every open, buildable issue in the
+  repo (skipping parent/epic issues). Only runs from an effectively fresh
+  session — refuses if the conversation already has substantial unrelated
+  history, since it needs the room. Confirms the full issue list with you
+  first, then works through them **one at a time, each in its own fresh
+  subagent** so no ticket's implementation context leaks into the next.
+  Reports a summary table (issue → PR or failure) at the end.
+
+Also requires explicit invocation via `/build`.
+
+See [`skills/build/SKILL.md`](skills/build/SKILL.md).
+
 ## Typical flow
 
 ```
 /start       → pressure-test the idea, get a Project Brief
 /setup       → turn that brief into a pushed GitHub repo + one tracking issue
 /plan-work   → break that issue into sub-issues, one per scope item
+/build       → implement one ticket (/build #12) or the whole backlog (/build)
 ```
 
 ## Status
 
-Three skills built so far (`/start`, `/setup`, `/plan-work`). More to come as they're built.
+Four skills built so far (`/start`, `/setup`, `/plan-work`, `/build`). More to come as they're built.
