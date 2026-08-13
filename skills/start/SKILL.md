@@ -1,9 +1,9 @@
 ---
-name: grill-me
-description: Use when the user hands over a raw project idea and wants it pressure-tested before building — asks pointed, skeptical questions about the problem, users, scope, and constraints, then produces a tight project brief. Triggers on "/grill-me", "grill me on this idea", "pressure-test this idea".
+name: start
+description: Use at the start of every new project or raw project idea — asks pointed, skeptical questions about the problem, users, scope, and constraints before any building begins, then produces a tight project brief. Triggers on "/start", "starting a new project", "kick off this idea".
 ---
 
-# Grill Me
+# Start
 
 Interrogate a raw project idea until it's sharp enough to build from. The
 point is not to collect trivia — it's to find the gaps, unstated
