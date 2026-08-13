@@ -1,7 +1,6 @@
 ---
 name: test
-description: Use whenever code is being written test-first — required as part of /build's implementation step for every ticket, and usable standalone for any TDD-style coding task. Enforces red-green-refactor at every step; no implementation code without a preceding failing test, and nothing counts as done until the full suite is green. Triggers on "/test", "write this test-first", "TDD this".
-disable-model-invocation: true
+description: Use before marking any issue, ticket, or piece of work as complete or closing it — verifies the work went through red-green-refactor TDD and the full suite is green before it's allowed to count as done. Also use whenever code is being written test-first. Applies automatically as part of /build's implementation step for every ticket, and is usable directly for any TDD-style coding task via /test. Triggers whenever an issue/ticket is about to be closed or marked done, or on "/test", "write this test-first", "TDD this".
 ---
 
 # Test
@@ -13,11 +12,17 @@ until the full suite is green.
 
 ## When invoked
 
+- **Automatically, whenever an issue/ticket is about to be marked
+  complete or closed** — this isn't limited to `/build`'s own flow; any
+  time work is about to be reported as done, apply this process first
+  rather than waiting to be asked. This skill can invoke itself on its
+  own judgment (no explicit `/test` needed) specifically for this
+  trigger.
 - Directly, via `/test`, for any coding task that should be built
-  test-first.
-- Automatically as part of `/build`'s implementation step — `/build`
-  follows this process for every ticket it implements, and will not
-  close an issue whose tests haven't gone green under this process.
+  test-first from the start.
+- As part of `/build`'s implementation step — `/build` follows this
+  process for every ticket it implements, and will not close an issue
+  whose tests haven't gone green under it.
 
 ## Before writing any code
 

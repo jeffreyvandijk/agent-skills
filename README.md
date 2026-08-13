@@ -109,15 +109,17 @@ without a preceding failing test that justifies it, one small behavior
 (including edge cases and error paths) at a time, red → green → refactor,
 full suite green before anything counts as done.
 
-Used two ways:
+Used three ways:
 
+- **Model-invoked automatically whenever an issue/ticket is about to be
+  marked complete or closed** — this is the only one of these skills
+  Claude can trigger on its own judgment, since the whole point is that
+  it applies before closing work, not just when explicitly asked.
 - Directly via `/test`, for any coding task that should be built
-  test-first.
-- Automatically inside `/build`'s implementation step — every ticket
-  `/build` implements goes through this process, and **an issue can only
-  be closed once its tests have gone green under this discipline.**
-
-Also requires explicit invocation via `/test`.
+  test-first from the start.
+- Inside `/build`'s implementation step — every ticket `/build`
+  implements goes through this process, and **an issue can only be
+  closed once its tests have gone green under this discipline.**
 
 See [`skills/test/SKILL.md`](skills/test/SKILL.md).
 
