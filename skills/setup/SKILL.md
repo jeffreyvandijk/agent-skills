@@ -1,13 +1,13 @@
 ---
 name: setup
-description: Use after /start has produced a project brief, to turn it into a real GitHub repo — asks about repo naming convention and visibility, scaffolds a README and .gitignore from the brief, then creates and pushes the repo. Triggers on "/setup", "create the repo for this", "set up the github repo".
+description: Use after /start has produced a project brief, to turn it into a real GitHub repo — asks about repo naming convention and visibility, scaffolds a README and .gitignore from the brief, creates and pushes the repo, then files one issue containing the full brief. Triggers on "/setup", "create the repo for this", "set up the github repo".
 ---
 
 # Setup
 
 Take a project brief and turn it into an actual GitHub repo: named and
 visible the way the user wants, seeded with a README that reflects the
-brief, and pushed.
+brief, pushed, and tracked by one issue containing the full brief.
 
 ## When invoked
 
@@ -51,8 +51,18 @@ fabricate a brief from nothing.
    ```
    This mirrors how `agent-skills` itself was bootstrapped.
 
-6. **Verify and report.** Confirm with `git remote -v` and `gh repo view`,
-   then report the repo URL back to the user.
+6. **File one big tracking issue.** Once the repo is pushed, create a
+   single GitHub issue with `gh issue create`:
+   - **Title** — the project name
+   - **Body** — the full Project Brief from `/start`, unabridged: problem,
+     target user, scope (with in-scope items as a markdown checklist),
+     constraints, success criteria, and open risks
+
+   Don't split this into multiple issues — one issue is the point.
+
+7. **Verify and report.** Confirm the repo with `git remote -v` and
+   `gh repo view`, confirm the issue with `gh issue view`, then report
+   both the repo URL and the issue URL back to the user.
 
 ## Tone
 
