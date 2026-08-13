@@ -1,6 +1,7 @@
 ---
 name: start
 description: Use at the start of every new project or raw project idea — asks pointed, skeptical questions about the problem, users, scope, and constraints before any building begins, then produces a tight project brief. Triggers on "/start", "starting a new project", "kick off this idea".
+disable-model-invocation: true
 ---
 
 # Start

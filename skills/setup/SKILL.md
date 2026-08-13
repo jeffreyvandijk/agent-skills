@@ -1,6 +1,7 @@
 ---
 name: setup
 description: Use after /start has produced a project brief, to turn it into a real GitHub repo — asks about repo naming convention and visibility, scaffolds a README and .gitignore from the brief, creates and pushes the repo, then files one issue containing the full brief. Triggers on "/setup", "create the repo for this", "set up the github repo".
+disable-model-invocation: true
 ---
 
 # Setup
