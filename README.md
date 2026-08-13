@@ -64,13 +64,30 @@ requires explicit invocation via `/setup`.
 
 See [`skills/setup/SKILL.md`](skills/setup/SKILL.md).
 
+### `/plan-work`
+
+Takes the one big tracking issue from `/setup` and breaks it into real
+GitHub sub-issues:
+
+1. Fetches the parent issue and extracts its scope checklist, one candidate sub-issue per item
+2. Shows the proposed breakdown and waits for confirmation/edits before creating anything
+3. Creates each sub-issue with `gh issue create`
+4. Links each one to the parent via GitHub's native sub-issue relationship (`gh api .../sub_issues`, since `gh` has no `--parent` flag)
+5. Leaves the parent issue open as the epic — GitHub renders its sub-issue progress automatically
+6. Reports back the parent issue URL and all new sub-issue URLs
+
+Also requires explicit invocation via `/plan-work`.
+
+See [`skills/plan-work/SKILL.md`](skills/plan-work/SKILL.md).
+
 ## Typical flow
 
 ```
-/start   → pressure-test the idea, get a Project Brief
-/setup   → turn that brief into a pushed GitHub repo + one tracking issue
+/start       → pressure-test the idea, get a Project Brief
+/setup       → turn that brief into a pushed GitHub repo + one tracking issue
+/plan-work   → break that issue into sub-issues, one per scope item
 ```
 
 ## Status
 
-Two skills built so far (`/start`, `/setup`). More to come as they're built.
+Three skills built so far (`/start`, `/setup`, `/plan-work`). More to come as they're built.
