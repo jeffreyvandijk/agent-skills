@@ -83,8 +83,14 @@ gh api repos/<owner>/<repo>/issues/<number>/sub_issues --jq 'length'
    `main`:
    ```
    gh pr merge <pr-number> --repo <owner>/<repo> --merge --delete-branch
-   gh issue close <number> --repo <owner>/<repo> \
-     --comment "<what was implemented, link to the PR, confirm tests pass and review is clean>"
+   ```
+   Because the PR body contains `Closes #<number>`, GitHub auto-closes
+   the issue the moment this merge lands — a separate `gh issue close`
+   will fail with "already closed". Don't treat that as an error; instead
+   add the summary as a comment on the (already-closed) issue:
+   ```
+   gh issue comment <number> --repo <owner>/<repo> \
+     --body "<what was implemented, link to the PR, confirm tests pass and review is clean>"
    ```
 9. Report back the PR URL and whether it was merged + issue closed, or
    left open pending fixes (and which gate blocked it, if any).
