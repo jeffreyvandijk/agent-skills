@@ -1,6 +1,6 @@
 ---
 name: build
-description: Use to implement issues created by /plan-work — either one specific ticket (/build #12) or the whole open backlog, one ticket per isolated subagent, every ticket built test-first via /test. Triggers on "/build", "/build #<number>", "build the issues", "implement this ticket".
+description: Use to implement issues created by /plan-work — either one specific ticket (/build #12) or the whole open backlog, one ticket per isolated subagent, every ticket built test-first via /test and closed only after passing /review. Triggers on "/build", "/build #<number>", "build the issues", "implement this ticket".
 disable-model-invocation: true
 ---
 
@@ -66,19 +66,25 @@ gh api repos/<owner>/<repo>/issues/<number>/sub_issues --jq 'length'
 
    <what changed and why>"
    ```
-6. **Gate: close only if the `test` skill's "done" bar is met** — every
-   behavior has a test that was red before it was green, and the full
-   suite passes (not just the new tests). If that bar isn't met, **do
-   not close the issue**. Leave the PR open (or don't open one at all if
-   nothing is green yet), comment on the issue with what's failing and
-   why, and report that back instead of a close. If the bar is met,
-   close it:
+6. **Gate 1 — TDD.** Close only if the `test` skill's "done" bar is met:
+   every behavior has a test that was red before it was green, and the
+   full suite passes (not just the new tests). If that bar isn't met,
+   **do not close the issue** — leave the PR open (or don't open one at
+   all if nothing is green yet), comment on the issue with what's
+   failing and why, report that back, and stop here for this ticket.
+7. **Gate 2 — review.** Once Gate 1 passes, run the `review` skill
+   against the PR: two subagents (correctness, simplification/efficiency)
+   review the diff in parallel, post their merged findings as a PR
+   comment. If either subagent has a confirmed finding, **do not close
+   the issue** — leave it open, the PR comment already states what needs
+   fixing, report that back, and stop here for this ticket.
+8. **Close.** Only once both gates pass:
    ```
    gh issue close <number> --repo <owner>/<repo> \
-     --comment "<what was implemented, link to the PR, confirm tests pass>"
+     --comment "<what was implemented, link to the PR, confirm tests pass and review is clean>"
    ```
-7. Report back the PR URL and whether the issue was closed or left open
-   pending fixes.
+9. Report back the PR URL and whether the issue was closed or left open
+   pending fixes (and which gate blocked it, if any).
 
 ## Build-all
 
@@ -95,13 +101,13 @@ gh api repos/<owner>/<repo>/issues/<number>/sub_issues --jq 'length'
    flows back to this orchestrating session is a short result (issue
    number, PR URL, pass/fail, one-line summary).
 5. After each subagent finishes, record its result and move to the next
-   issue. A ticket left open because it didn't clear the `test` skill's
-   done bar is an expected outcome, not a crash — note it and continue.
-   Only stop the whole run early if the failure looks systemic (e.g. the
-   repo doesn't build at all regardless of ticket).
+   issue. A ticket left open because it didn't clear Gate 1 (`test`) or
+   Gate 2 (`review`) is an expected outcome, not a crash — note it and
+   continue. Only stop the whole run early if the failure looks systemic
+   (e.g. the repo doesn't build at all regardless of ticket).
 6. When the run ends (all issues attempted, or stopped early), report a
    summary table: issue number → PR URL + closed, or left open with the
-   reason, for every ticket attempted.
+   reason (which gate blocked it), for every ticket attempted.
 
 ## Tone
 

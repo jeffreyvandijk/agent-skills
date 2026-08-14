@@ -85,10 +85,12 @@ See [`skills/plan-work/SKILL.md`](skills/plan-work/SKILL.md).
 Implements the sub-issues from `/plan-work` as real code. Two modes:
 
 - **`/build #12`** — implement exactly that issue: branch, implement
-  test-first via `/test`, commit, push, open a PR (`Closes #12`), and
-  close the issue **only if every behavior's tests are green and the
-  full suite passes** — otherwise the issue stays open with a comment
-  explaining what's failing.
+  test-first via `/test`, commit, push, open a PR (`Closes #12`). Closes
+  the issue only after clearing **two gates**: (1) `/test`'s TDD bar —
+  every behavior's tests are green and the full suite passes, and (2)
+  `/review`'s two-axis code review comes back with no confirmed findings.
+  Either gate failing leaves the issue open with a comment explaining
+  what's blocking it.
 - **`/build`** (no number) — implement every open, buildable issue in the
   repo (skipping parent/epic issues). Only runs from an effectively fresh
   session — refuses if the conversation already has substantial unrelated
@@ -123,6 +125,32 @@ Used three ways:
 
 See [`skills/test/SKILL.md`](skills/test/SKILL.md).
 
+### `/review`
+
+A two-axis code review, run as two independent subagents in parallel
+against a diff:
+
+- **Correctness subagent** — logic errors, mishandled edge cases,
+  crashes, behavior that doesn't match the issue's acceptance criteria.
+- **Simplification/efficiency subagent** — duplication, unnecessary
+  complexity, missed opportunities to reuse existing code, inefficient
+  patterns.
+
+Both subagents verify each finding against the actual code before
+reporting it — no speculative flags, and an empty list is a valid clean
+result. Findings are merged and posted as a single PR comment.
+
+Used three ways, same pattern as `/test`:
+
+- **Model-invoked automatically whenever an issue/ticket is about to be
+  marked complete or closed.**
+- Directly via `/review`, to review any diff/PR/branch on demand.
+- Inside `/build`'s implementation step, as the second closing gate,
+  after `/test`'s TDD gate passes — **any confirmed finding blocks the
+  issue from closing.**
+
+See [`skills/review/SKILL.md`](skills/review/SKILL.md).
+
 ## Typical flow
 
 ```
@@ -130,9 +158,9 @@ See [`skills/test/SKILL.md`](skills/test/SKILL.md).
 /setup       → turn that brief into a pushed GitHub repo + one tracking issue
 /plan-work   → break that issue into sub-issues, one per scope item
 /build       → implement one ticket (/build #12) or the whole backlog (/build),
-                test-first via /test — issues only close once tests are green
+                test-first via /test, closed only after /review comes back clean
 ```
 
 ## Status
 
-Five skills built so far (`/start`, `/setup`, `/plan-work`, `/build`, `/test`). More to come as they're built.
+Six skills built so far (`/start`, `/setup`, `/plan-work`, `/build`, `/test`, `/review`). More to come as they're built.
