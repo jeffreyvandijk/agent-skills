@@ -54,10 +54,11 @@ Takes the Project Brief from `/start` and turns it into a real GitHub repo:
 1. Proposes a kebab-case repo name from the brief, confirms name/casing with you
 2. Asks visibility (public/private) — never assumes
 3. Picks a local directory (defaults to `~/projects/<repo-name>`, refuses to overwrite an existing path)
-4. Scaffolds `README.md` (from the brief) and a stack-appropriate `.gitignore` — no `LICENSE`, no license question
+4. Scaffolds a **short** `README.md` (name, one-line description, scope summary — not the full brief) and a stack-appropriate `.gitignore` — no `LICENSE`, no license question
 5. `git init` → commit → `gh repo create --source=. --remote=origin --push`
-6. Files one GitHub issue titled with the project name, body containing the full unabridged brief, with scope as a checklist
-7. Reports back the repo URL and issue URL
+6. Files one GitHub issue titled with the project name, body containing the full unabridged brief, with scope as a checklist — **the single source of truth**, not duplicated into the README
+7. Links the README to that issue and pushes the small follow-up commit
+8. Reports back the repo URL and issue URL
 
 Always creates under the personal GitHub account (no org prompt). Also
 requires explicit invocation via `/setup`.
