@@ -78,13 +78,16 @@ gh api repos/<owner>/<repo>/issues/<number>/sub_issues --jq 'length'
    comment. If either subagent has a confirmed finding, **do not close
    the issue** — leave it open, the PR comment already states what needs
    fixing, report that back, and stop here for this ticket.
-8. **Close.** Only once both gates pass:
+8. **Merge and close.** Only once both gates pass — an issue closed
+   against an unmerged PR isn't actually done, the code still isn't on
+   `main`:
    ```
+   gh pr merge <pr-number> --repo <owner>/<repo> --merge --delete-branch
    gh issue close <number> --repo <owner>/<repo> \
      --comment "<what was implemented, link to the PR, confirm tests pass and review is clean>"
    ```
-9. Report back the PR URL and whether the issue was closed or left open
-   pending fixes (and which gate blocked it, if any).
+9. Report back the PR URL and whether it was merged + issue closed, or
+   left open pending fixes (and which gate blocked it, if any).
 
 ## Build-all
 

@@ -51,9 +51,10 @@ gh issue view <number> --repo <owner>/<repo> --json title,body,number
    # Get each new sub-issue's database id
    gh api repos/<owner>/<repo>/issues/<child_number> --jq .id
 
-   # Attach it as a sub-issue of the parent
+   # Attach it as a sub-issue of the parent — use -F (typed), not -f
+   # (string): the API rejects sub_issue_id sent as a string.
    gh api repos/<owner>/<repo>/issues/<parent_number>/sub_issues \
-     -X POST -f sub_issue_id=<child_database_id> \
+     -X POST -F sub_issue_id=<child_database_id> \
      -H "Accept: application/vnd.github+json" \
      -H "X-GitHub-Api-Version: 2022-11-28"
    ```
