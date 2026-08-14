@@ -1,6 +1,6 @@
 ---
 name: build
-description: Use to implement issues created by /plan-work — either one specific ticket (/build #12) or the whole open backlog, one ticket per isolated subagent, every ticket built test-first via /test and closed only after passing /review. Triggers on "/build", "/build #<number>", "build the issues", "implement this ticket".
+description: Use to implement issues created by /plan-work — either one specific ticket (/build #12) or the whole open backlog, one ticket per isolated subagent, every ticket built test-first via /test, closed only after passing /review, and rolled up into the parent epic via /finish. Triggers on "/build", "/build #<number>", "build the issues", "implement this ticket".
 disable-model-invocation: true
 ---
 
@@ -92,8 +92,12 @@ gh api repos/<owner>/<repo>/issues/<number>/sub_issues --jq 'length'
    gh issue comment <number> --repo <owner>/<repo> \
      --body "<what was implemented, link to the PR, confirm tests pass and review is clean>"
    ```
-9. Report back the PR URL and whether it was merged + issue closed, or
-   left open pending fixes (and which gate blocked it, if any).
+9. **Run the `finish` skill** against this issue's parent epic — it
+   checks whether every sub-issue is now closed and closes the epic
+   itself if so. Most tickets won't be the last one; that's expected.
+10. Report back the PR URL, whether it was merged + issue closed (or
+    left open pending fixes and which gate blocked it), and whether
+    `finish` closed the parent epic too.
 
 ## Build-all
 

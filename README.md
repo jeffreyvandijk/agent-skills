@@ -85,12 +85,13 @@ See [`skills/plan-work/SKILL.md`](skills/plan-work/SKILL.md).
 Implements the sub-issues from `/plan-work` as real code. Two modes:
 
 - **`/build #12`** — implement exactly that issue: branch, implement
-  test-first via `/test`, commit, push, open a PR (`Closes #12`). Closes
-  the issue only after clearing **two gates**: (1) `/test`'s TDD bar —
-  every behavior's tests are green and the full suite passes, and (2)
-  `/review`'s two-axis code review comes back with no confirmed findings.
-  Either gate failing leaves the issue open with a comment explaining
-  what's blocking it.
+  test-first via `/test`, commit, push, open a PR (`Closes #12`). Merges
+  the PR and closes the issue only after clearing **two gates**: (1)
+  `/test`'s TDD bar — every behavior's tests are green and the full suite
+  passes, and (2) `/review`'s two-axis code review comes back with no
+  confirmed findings. Either gate failing leaves the issue open with a
+  comment explaining what's blocking it. Once closed, runs `/finish`
+  against the parent epic in case that was the last sub-issue.
 - **`/build`** (no number) — implement every open, buildable issue in the
   repo (skipping parent/epic issues). Only runs from an effectively fresh
   session — refuses if the conversation already has substantial unrelated
@@ -151,6 +152,26 @@ Used three ways, same pattern as `/test`:
 
 See [`skills/review/SKILL.md`](skills/review/SKILL.md).
 
+### `/finish`
+
+Closes the loop `/setup` opened. A sub-issue closing doesn't mean the
+project is done — the parent epic only closes once every sub-issue
+`/plan-work` created under it is closed too.
+
+- Checks every sibling sub-issue's state via the sub-issues API.
+- If any sibling is still open, does nothing — reports how many are done
+  and stops. No partial close, no nagging comment.
+- If every sibling is closed, closes the parent epic with a rollup
+  summary linking each sub-issue's merged PR.
+
+Used two ways, same pattern as `/test`/`/review`:
+
+- **Model-invoked automatically whenever a sub-issue is closed** — most
+  often right after `/build` finishes a ticket.
+- Directly via `/finish`, to check or close any epic on demand.
+
+See [`skills/finish/SKILL.md`](skills/finish/SKILL.md).
+
 ## Typical flow
 
 ```
@@ -158,9 +179,10 @@ See [`skills/review/SKILL.md`](skills/review/SKILL.md).
 /setup       → turn that brief into a pushed GitHub repo + one tracking issue
 /plan-work   → break that issue into sub-issues, one per scope item
 /build       → implement one ticket (/build #12) or the whole backlog (/build),
-                test-first via /test, closed only after /review comes back clean
+                test-first via /test, merged + closed only after /review comes back clean
+/finish      → once the last sub-issue closes, closes the parent epic with a rollup summary
 ```
 
 ## Status
 
-Six skills built so far (`/start`, `/setup`, `/plan-work`, `/build`, `/test`, `/review`). More to come as they're built.
+Seven skills built so far (`/start`, `/setup`, `/plan-work`, `/build`, `/test`, `/review`, `/finish`). More to come as they're built.
