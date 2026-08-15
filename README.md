@@ -31,6 +31,59 @@ Instructions for Claude to follow when this skill is invoked.
 Claude Code auto-discovers skills placed in a recognized skills directory and
 lists them as invocable via `/my-skill` or by name.
 
+## Installing these skills
+
+Clone this repo somewhere, then make its `skills/` contents visible to
+Claude Code one of these ways:
+
+### Personal (all your projects) — recommended
+
+Symlink each skill into your personal skills directory so every project
+on your machine gets them:
+
+```bash
+git clone https://github.com/jeffreyvandijk/agent-skills.git ~/projects/agent-skills
+mkdir -p ~/.claude/skills
+for d in ~/projects/agent-skills/skills/*/; do
+  ln -sfn "$d" ~/.claude/skills/"$(basename "$d")"
+done
+```
+
+Symlinking (rather than copying) means `git pull` in `~/projects/agent-skills`
+keeps every installed skill up to date. Picked up automatically — no
+restart needed for personal skills already being watched.
+
+### Project-only
+
+To scope these skills to a single project instead of your whole machine,
+symlink (or copy) them into that project's `.claude/skills/` directory:
+
+```bash
+mkdir -p /path/to/your-project/.claude/skills
+for d in ~/projects/agent-skills/skills/*/; do
+  ln -sfn "$d" /path/to/your-project/.claude/skills/"$(basename "$d")"
+done
+```
+
+If `.claude/skills/` didn't exist in that project before you added it,
+restart Claude Code once so it starts watching the new directory.
+
+### Ad hoc, without installing
+
+Add this repo's `skills/` folder to a running session for the current
+window only, without copying or symlinking anything:
+
+```
+/add-dir ~/projects/agent-skills
+```
+
+### Plugin marketplace
+
+Claude Code also supports distributing skills as a plugin marketplace
+(`/plugin marketplace add <repo>`, then `/plugin install <skill>@<marketplace>`).
+This repo isn't set up as one yet — it would need a marketplace manifest
+added first — so for now, use one of the methods above.
+
 ## Skills
 
 ### `/start`
