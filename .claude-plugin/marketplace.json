@@ -1,0 +1,25 @@
+{
+  "$schema": "https://code.claude.com/schemas/marketplace.schema.json",
+  "name": "agent-skills",
+  "description": "Custom Claude Code skills for a full project pipeline: idea to repo to shipped, tested, reviewed code.",
+  "owner": {
+    "name": "Jeffrey van Dijk"
+  },
+  "plugins": [
+    {
+      "name": "agent-skills",
+      "source": "./",
+      "description": "A project pipeline: pressure-test an idea, stand up the repo, break it into issues, and build it test-first with a two-axis code review gate.",
+      "strict": false,
+      "skills": [
+        "./skills/start",
+        "./skills/setup",
+        "./skills/plan-work",
+        "./skills/build",
+        "./skills/test",
+        "./skills/review",
+        "./skills/finish"
+      ]
+    }
+  ]
+}

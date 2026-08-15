@@ -79,10 +79,18 @@ window only, without copying or symlinking anything:
 
 ### Plugin marketplace
 
-Claude Code also supports distributing skills as a plugin marketplace
-(`/plugin marketplace add <repo>`, then `/plugin install <skill>@<marketplace>`).
-This repo isn't set up as one yet — it would need a marketplace manifest
-added first — so for now, use one of the methods above.
+This repo is also a Claude Code plugin marketplace (`.claude-plugin/marketplace.json`
+at the root), bundling all 7 skills as one plugin since they're an
+interdependent pipeline, not standalone tools:
+
+```
+/plugin marketplace add jeffreyvandijk/agent-skills
+/plugin install agent-skills@agent-skills
+```
+
+Skills installed this way are namespaced (`/agent-skills:start`, etc.) and
+don't conflict with the manual symlink method above — both can be used at
+once if you want.
 
 ## Skills
 
