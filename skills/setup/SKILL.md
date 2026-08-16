@@ -69,9 +69,14 @@ fabricate a brief from nothing.
    is the single source of truth for the full brief; the README doesn't
    repeat it.
 
-7. **Link the README to the issue.** Now that the issue number is known,
-   replace the placeholder line from step 4 with a real link (e.g. `Full
-   project brief and progress: #<issue-number>`), commit, and push:
+7. **Link the README to the issue.** Now that the issue URL is known,
+   replace the placeholder line from step 4 with a real link using the
+   **full issue URL**, not `#<issue-number>` — GitHub only auto-links the
+   `#` shorthand inside issues/PRs/commits, not inside a rendered
+   README.md, so the shorthand would show up as plain unlinked text (e.g.
+   `Full project brief and progress:
+   https://github.com/<owner>/<repo>/issues/<issue-number>`), commit, and
+   push:
    ```
    git add README.md
    git commit -m "docs: link README to tracking issue #<issue-number>"
