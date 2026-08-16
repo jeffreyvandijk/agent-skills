@@ -234,29 +234,31 @@ Used two ways, same pattern as `/test`/`/review`:
 
 See [`skills/finish/SKILL.md`](skills/finish/SKILL.md).
 
-### `/help`
+### `/help-skills`
 
 An on-demand overview of the whole package — what each skill does,
 whether it's explicit-only or model-invoked, and how they fit together.
 Reads every sibling `SKILL.md`'s frontmatter live rather than keeping a
 second, hardcoded summary that could drift out of sync as skills change.
+(Named `/help-skills`, not `/help` — that's reserved for Claude Code's
+own built-in help command.)
 
-Requires explicit invocation via `/help`.
+Requires explicit invocation via `/help-skills`.
 
-See [`skills/help/SKILL.md`](skills/help/SKILL.md).
+See [`skills/help-skills/SKILL.md`](skills/help-skills/SKILL.md).
 
 ## Typical flow
 
 ```
-/start       → pressure-test the idea, get a Project Brief
-/setup       → turn that brief into a pushed GitHub repo + one tracking issue
-/plan-work   → break that issue into sub-issues, one per scope item
-/build       → implement one ticket (/build #12) or the whole backlog (/build),
-                test-first via /test, merged + closed only after /review comes back clean
-/finish      → once the last sub-issue closes, closes the parent epic with a rollup summary
-/help        → get an overview of all of the above, any time
+/start          → pressure-test the idea, get a Project Brief
+/setup          → turn that brief into a pushed GitHub repo + one tracking issue
+/plan-work      → break that issue into sub-issues, one per scope item
+/build          → implement one ticket (/build #12) or the whole backlog (/build),
+                   test-first via /test, merged + closed only after /review comes back clean
+/finish         → once the last sub-issue closes, closes the parent epic with a rollup summary
+/help-skills    → get an overview of all of the above, any time
 ```
 
 ## Status
 
-Eight skills built so far (`/start`, `/setup`, `/plan-work`, `/build`, `/test`, `/review`, `/finish`, `/help`). More to come as they're built.
+Eight skills built so far (`/start`, `/setup`, `/plan-work`, `/build`, `/test`, `/review`, `/finish`, `/help-skills`). More to come as they're built.

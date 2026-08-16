@@ -1,10 +1,10 @@
 ---
-name: help
-description: Use to get an overview of every skill in this package — what each one does, when to use it, whether it's explicit-only or fires automatically, and how they fit together as a pipeline. Triggers on "/help", "what skills are available", "explain this skill package", "how does this pipeline work".
+name: help-skills
+description: Use to get an overview of every skill in this package — what each one does, when to use it, whether it's explicit-only or fires automatically, and how they fit together as a pipeline. Triggers on "/help-skills", "what skills are available", "explain this skill package", "how does this pipeline work". Not to be confused with Claude Code's own built-in /help.
 disable-model-invocation: true
 ---
 
-# Help
+# Help Skills
 
 Explains the whole skill package on demand: what's available, what each
 piece does, and how they connect — read live from each skill's own

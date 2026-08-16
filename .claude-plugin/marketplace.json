@@ -19,7 +19,7 @@
         "./skills/test",
         "./skills/review",
         "./skills/finish",
-        "./skills/help"
+        "./skills/help-skills"
       ]
     }
   ]
