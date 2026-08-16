@@ -234,6 +234,17 @@ Used two ways, same pattern as `/test`/`/review`:
 
 See [`skills/finish/SKILL.md`](skills/finish/SKILL.md).
 
+### `/help`
+
+An on-demand overview of the whole package — what each skill does,
+whether it's explicit-only or model-invoked, and how they fit together.
+Reads every sibling `SKILL.md`'s frontmatter live rather than keeping a
+second, hardcoded summary that could drift out of sync as skills change.
+
+Requires explicit invocation via `/help`.
+
+See [`skills/help/SKILL.md`](skills/help/SKILL.md).
+
 ## Typical flow
 
 ```
@@ -243,8 +254,9 @@ See [`skills/finish/SKILL.md`](skills/finish/SKILL.md).
 /build       → implement one ticket (/build #12) or the whole backlog (/build),
                 test-first via /test, merged + closed only after /review comes back clean
 /finish      → once the last sub-issue closes, closes the parent epic with a rollup summary
+/help        → get an overview of all of the above, any time
 ```
 
 ## Status
 
-Seven skills built so far (`/start`, `/setup`, `/plan-work`, `/build`, `/test`, `/review`, `/finish`). More to come as they're built.
+Eight skills built so far (`/start`, `/setup`, `/plan-work`, `/build`, `/test`, `/review`, `/finish`, `/help`). More to come as they're built.

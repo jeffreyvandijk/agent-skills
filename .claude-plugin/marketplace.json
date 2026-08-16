@@ -18,7 +18,8 @@
         "./skills/build",
         "./skills/test",
         "./skills/review",
-        "./skills/finish"
+        "./skills/finish",
+        "./skills/help"
       ]
     }
   ]
