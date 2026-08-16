@@ -92,6 +92,33 @@ Skills installed this way are namespaced (`/agent-skills:start`, etc.) and
 don't conflict with the manual symlink method above — both can be used at
 once if you want.
 
+## Overview
+
+**Main sequence:**
+
+| Skill | Purpose | Invocation |
+|---|---|---|
+| `/start` | Pressure-tests a raw project idea — pointed, skeptical questions on problem, users, scope, constraints — until it produces a Project Brief. | Explicit only |
+| `/setup` | Turns that brief into a real GitHub repo: asks naming/visibility, scaffolds a short README + `.gitignore`, pushes, files one tracking issue with the full brief. | Explicit only |
+| `/plan-work` | Breaks that tracking issue into real GitHub sub-issues, one per scope item, confirmed with you before creating anything. | Explicit only |
+| `/build` | Implements a ticket (`/build #12`) or the whole backlog (`/build`) — branch, TDD, PR, gated close. Build-all only runs from a fresh session. | Explicit only |
+
+**Gates inside `/build`** (not separate steps — they run automatically as part of it, but also work standalone):
+
+| Skill | Purpose | Invocation |
+|---|---|---|
+| `/test` | Enforces red-green-refactor TDD; an issue can't close until every behavior's tests went red before green and the full suite passes. | Model-invoked whenever an issue is about to close, plus explicit `/test` |
+| `/review` | Two-axis subagent code review (correctness + simplification/efficiency) against the diff; any confirmed finding blocks closing. | Model-invoked whenever an issue is about to close, plus explicit `/review` |
+
+**Closing the loop:**
+
+| Skill | Purpose | Invocation |
+|---|---|---|
+| `/finish` | After a sub-issue closes, checks if all siblings are closed too — if so, closes the parent epic with a rollup summary. | Model-invoked whenever a sub-issue closes, plus explicit `/finish` |
+| `/help-skills` | An on-demand overview of the whole package — this table, read live from every skill's frontmatter rather than kept as a second static copy. | Explicit only |
+
+Full detail on any one skill is in the sections below, or `skills/<name>/SKILL.md` in the repo.
+
 ## Skills
 
 ### `/start`
