@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Use after /start has produced a project brief, to turn it into a real GitHub repo — asks about repo naming convention and visibility, scaffolds a short README and .gitignore, creates and pushes the repo, then files one issue containing the full brief and links the README to it. Triggers on "/setup", "create the repo for this", "set up the github repo".
+description: Use after /start has produced a project brief, to turn it into a real GitHub repo — asks about repo naming convention and visibility, scaffolds a short README and .gitignore, creates and pushes the repo, then files one issue containing the full brief and links the README to it. If the repo already exists (a later phase's brief, e.g. v2 after /start ran again), skips repo creation and just files a new tracking issue for that phase. Triggers on "/setup", "create the repo for this", "set up the github repo".
 disable-model-invocation: true
 ---
 
@@ -18,7 +18,16 @@ Requires a project brief to work from. If the conversation already has one
 run `/start` first or give a short summary of the idea now — don't
 fabricate a brief from nothing.
 
-## Process
+**Check whether the repo already exists first.** Run `git rev-parse
+--is-inside-work-tree` and `git remote -v` in the current directory. If
+this is already a git repo with a GitHub `origin` remote, this is a later
+phase of a project `/setup` already created (e.g. a v2 brief from running
+`/start` again after a v1 shipped) — jump straight to **Process B**. Don't
+re-ask about repo name, visibility, or local directory; that was already
+decided and answering it again just wastes the user's time. Only run
+**Process A** when there's no existing repo to work with.
+
+## Process A — new project (no repo yet)
 
 1. **Propose a repo name.** Derive a kebab-case name from the project idea
    in the brief. Confirm it with the user via AskUserQuestion — kebab-case
@@ -86,6 +95,32 @@ fabricate a brief from nothing.
 8. **Verify and report.** Confirm the repo with `git remote -v` and
    `gh repo view`, confirm the issue with `gh issue view`, then report
    both the repo URL and the issue URL back to the user.
+
+## Process B — later phase (repo already exists)
+
+The repo, README, and `.gitignore` already exist. All that's needed is
+tracking the new phase's brief.
+
+1. **File one big tracking issue for this phase**, same rules as Process A
+   step 6:
+   - **Title** — the project name plus the phase, e.g. `<project> v2` (ask
+     the user what to call the phase only if it isn't obvious from the
+     brief — don't guess something arbitrary)
+   - **Body** — the full Project Brief from `/start` for this phase,
+     unabridged
+
+   Don't fold this into the original v1 issue and don't split it further —
+   one issue per phase, same as one issue per project in Process A.
+
+2. **Leave the README alone unless it needs updating.** If it already
+   points at the repo's issues in general (not hardcoded to a single
+   issue number), nothing to do. If it hardcodes a link to the v1 issue
+   specifically, ask the user whether they want it updated to also
+   reference the new phase issue, or left as historical — don't decide
+   silently either way.
+
+3. **Verify and report.** Confirm the issue with `gh issue view`, then
+   report the issue URL back to the user.
 
 ## Tone
 
