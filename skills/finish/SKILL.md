@@ -43,8 +43,30 @@ once every sub-issue `/plan-work` created under it is closed too.
      --comment "<rollup: one line per sub-issue with its PR link>"
    ```
 
-5. **Report back** the parent issue URL and whether it closed, or how
-   many sub-issues remain if it didn't.
+5. **Show the finished product.** Now that the epic just closed, launch
+   the app so the user (and anyone else on the network) can see it live —
+   skip this quietly if the project isn't a running app (a library, a
+   one-shot script, etc.):
+   - Check for a project-specific launch skill first; otherwise fall back
+     to the built-in `run` skill's pattern for this project's type
+     (server/CLI/TUI/etc.), including its background-launch and
+     readiness-check approach.
+   - Bind the listener to all interfaces — `0.0.0.0` or the framework's
+     equivalent (`--host 0.0.0.0`, `HOST=0.0.0.0`, etc.) — instead of
+     localhost-only, so other clients on the LAN can reach it too. This
+     opens the port to everyone on the local network, which is fine for a
+     demo on a trusted LAN but is a real exposure — mention it when you
+     report the URL, and don't do this on a machine reachable beyond a
+     trusted network.
+   - Get this machine's LAN IP (`hostname -I | awk '{print $1}'` on
+     Linux, `ipconfig getifaddr en0` on macOS) and report the reachable
+     URL, e.g. `http://<lan-ip>:<port>`.
+   - Leave it running in the background after verifying it's up — the
+     point is for the user to view it, not to tear it down immediately.
+
+6. **Report back** the parent issue URL and whether it closed, or how
+   many sub-issues remain if it didn't. If it closed, include the live
+   URL from step 5.
 
 ## Tone
 
