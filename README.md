@@ -114,7 +114,7 @@ once if you want.
 
 | Skill | Purpose | Invocation |
 |---|---|---|
-| `/finish` | After a sub-issue closes, checks if all siblings are closed too — if so, closes the parent epic with a rollup summary. | Model-invoked whenever a sub-issue closes, plus explicit `/finish` |
+| `/finish` | After a sub-issue closes, checks if all siblings are closed too — if so, closes the parent epic with a rollup summary and launches the app, network-reachable, to show it off. | Model-invoked whenever a sub-issue closes, plus explicit `/finish` |
 | `/help-skills` | An on-demand overview of the whole package — this table, read live from every skill's frontmatter rather than kept as a second static copy. | Explicit only |
 
 Full detail on any one skill is in the sections below, or `skills/<name>/SKILL.md` in the repo.
@@ -252,6 +252,12 @@ project is done — the parent epic only closes once every sub-issue
   and stops. No partial close, no nagging comment.
 - If every sibling is closed, closes the parent epic with a rollup
   summary linking each sub-issue's merged PR.
+- Then shows off the finished product: launches the app (via a
+  project-specific launch skill, or the built-in `run` skill's pattern),
+  bound to all interfaces (`0.0.0.0`) instead of localhost, and reports
+  the machine's LAN URL (`http://<lan-ip>:<port>`) so other clients on
+  the network can view it. Skipped quietly for projects that aren't a
+  running app.
 
 Used two ways, same pattern as `/test`/`/review`:
 
@@ -282,7 +288,8 @@ See [`skills/help-skills/SKILL.md`](skills/help-skills/SKILL.md).
 /plan-work      → break that issue into sub-issues, one per scope item
 /build          → implement one ticket (/build #12) or the whole backlog (/build),
                    test-first via /test, merged + closed only after /review comes back clean
-/finish         → once the last sub-issue closes, closes the parent epic with a rollup summary
+/finish         → once the last sub-issue closes, closes the parent epic with a rollup summary,
+                   then runs the app on the LAN so you (and others) can see it live
 /help-skills    → get an overview of all of the above, any time
 ```
 
