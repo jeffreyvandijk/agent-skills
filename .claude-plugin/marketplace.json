@@ -1,6 +1,6 @@
 {
   "$schema": "https://code.claude.com/schemas/marketplace.schema.json",
-  "name": "agent-skills",
+  "name": "jvdijk90-agent-skills",
   "description": "Custom Claude Code skills for a full project pipeline: idea to repo to shipped, tested, reviewed code.",
   "owner": {
     "name": "Jeffrey van Dijk"

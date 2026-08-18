@@ -85,7 +85,7 @@ interdependent pipeline, not standalone tools:
 
 ```
 /plugin marketplace add jeffreyvandijk/agent-skills
-/plugin install agent-skills@agent-skills
+/plugin install agent-skills@jvdijk90-agent-skills
 ```
 
 Skills installed this way are namespaced (`/agent-skills:start`, etc.) and
